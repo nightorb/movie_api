@@ -2,19 +2,22 @@
   "name": "movie_api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nightorb/movie_api.git"
   },
-  "author": "Anastasia Nathanailidou",
+  "author": "nightorb",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/nightorb/movie_api/issues"
   },
-  "homepage": "https://github.com/nightorb/movie_api#readme"
+  "homepage": "https://github.com/nightorb/movie_api#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
 }
