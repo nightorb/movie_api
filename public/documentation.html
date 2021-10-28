@@ -8,12 +8,160 @@
   </head>
 
   <body>
+    
     <h1>Documentation Page</h1>
+
+    <h2>Overview</h2>
     <p>
       To build the server-side component of a “movies” web application.<br>
       The web application will provide users with access to information about different movies, directors, and genres.<br>
       Users will be able to sign up, update their personal information, and create a list of their favorite movies.
     </p>
+
+    <h2>URL Endpoints</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>REQUEST</th>
+          <th>URL</th>
+          <th>HTTP METHOD</th>
+          <th>REQUEST BODY DATA FORMAT</th>
+          <th>RESPONSE BODY DATA FORMAT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Get a list of all movies</td>
+          <td>/movies</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>A JSON object holding data about all the movies</td>
+        </tr>
+        <tr>
+          <td>Get information about a single movie by its title</td>
+          <td>/movies/:title</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            A JSON object holding data about a single movie (title, year, genre, director):<br>
+            {<br>
+              title: 'Kung Fu Panda',<br>
+              year: 2008,<br>
+              genre: ['Animation', 'Action', 'Adventure'],<br>
+              director: ['Mark Osborne','John Stevenson']<br>
+            }
+          </td>
+        </tr>
+        <tr>
+          <td>Get a list of all genres</td>
+          <td>/genres</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>A JSON object holding data about all the genres</td>
+        </tr>
+        <tr>
+          <td>Get information about a genre by its name</td>
+          <td>/genres/:genre</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            A JSON object holding data about a specific genre:<br>
+            {<br>
+              genreName: 'Action',
+              description: 'An action story is similar to adventure, and the protagonist usually takes a risky turn, which leads to desperate situations'<br>
+            }
+          </td>
+        </tr>
+        <tr>
+          <td>Get a list of all directors</td>
+          <td>/directors</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>A JSON object holding data about all directors</td>
+        </tr>
+        <tr>
+          <td>Get information about a director by name</td>
+          <td>/directors/:name</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            A JSON object holding data about a specific genre:<br>
+            {<br>
+              name: 'Mark Osborne',<br>
+              born: 'September 17, 1970'<br>
+            }
+          </td>
+        </tr>
+        <tr>
+          <td>Allow new users to register</td>
+          <td>/register</td>
+          <td>POST</td>
+          <td>
+            A JSON object holding data about the user to add, structured like:<br>
+            {<br>
+              username: 'username',<br>
+              email: 'example@email.com'<br>
+            }
+          </td>
+          <td>
+            A JSON object holding data about the user that was added:<br>
+            {<br>
+              username: 'username',<br>
+              email: 'example@email.com'<br>
+            }
+          </td>
+        </tr>
+        <tr>
+          <td>Get information about a user</td>
+          <td>/users/:username</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            A JSON object holding data about the user:<br>
+            {<br>
+              username: 'username',<br>
+              email: 'example@email.com'<br>
+            }
+          </td>
+        </tr>
+        <tr>
+          <td>Allow users to update their username</td>
+          <td>/users/:username</td>
+          <td>PUT</td>
+          <td>None</td>
+          <td>A text message indicating the username was updated.</td>
+        </tr>
+        <tr>
+          <td>Get a list of a user's favorite movies</td>
+          <td>/users/:username/favorites</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>A JSON object holding data about a user's favorite movies.</td>
+        </tr>
+        <tr>
+          <td>Allow users to add a movie to their favorites</td>
+          <td>/users/:username/favorites</td>
+          <td>POST</td>
+          <td>None</td>
+          <td>A text message indicating the movie has been added to the user's favorites.</td>
+        </tr>
+        <tr>
+          <td>Allow users to remove a movie from their favorites</td>
+          <td>/users/:username/favorites</td>
+          <td>DELETE</td>
+          <td>None</td>
+          <td>A text message indicating the movie has been removed from the user's favorites.</td>
+        </tr>
+        <tr>
+          <td>Allow existing users to deregister</td>
+          <td>/users/:username</td>
+          <td>DELETE</td>
+          <td>None</td>
+          <td>A text message indicating the user has been deregistered.</td>
+        </tr>
+      </tbody>
+    </table>
+
   </body>
 
 </html>
