@@ -104,6 +104,14 @@ app.get('/directors/:name', (req, res) => {
   res.send('Successful GET request returning information about a director by name.');
 });
 
+app.get('/actors/', (req, res) => {
+  res.send('Successful GET request returning a list of all actors.');
+});
+
+app.get('/actors/:name', (req, res) => {
+  res.send('Successful GET request returning information about a actor by name.');
+});
+
 app.post('/register', (req, res) => {
   res.send('Successful POST request a new user registered.');
 });
