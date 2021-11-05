@@ -43,13 +43,25 @@
           <td>GET</td>
           <td>None</td>
           <td>
-            A JSON object holding data about a single movie (title, year, genre, director):<br>
+            A JSON object holding data about a single movie (title, year, genre, director, etc,):<br>
             {<br>
-              title: 'Kung Fu Panda',<br>
-              year: 2008,<br>
-              genre: ['Animation', 'Action', 'Adventure'],<br>
-              director: ['Mark Osborne','John Stevenson']<br>
-            }
+              _id: "mov01",<br>
+              Title: "Kung Fu Panda",<br>
+              ReleaseYear: "2008",<br>
+              Description: "When the Valley of Peace is threatened, the lazy panda Po discovers his destiny as the \"chosen one\" and trains to become a Kung Fu hero, but transforming the unsleek slacker into a brave warrior won't be easy. It's up to Master Shifu and the Furious Five - Tigress, Crane, Mantis, Viper and Monkey - to give it a try.",<br>
+              Genre: {<br>
+                Name: "Animation",<br>
+                Description: Description: "Animation is a method in which figures are manipulated to appear as moving images. This can be done in many different ways and can incorporate any other genre or sub-genre. In traditional animation, images are drawn or painted by hand on transparent celluloid sheets to be photographed and exhibited on film. Today, most animations are made with computer-generated imagery (CGI)."<br>
+              },<br>
+              Director: {<br>
+                Name: "John Stevenson",<br>
+                Bio: "John Stevenson is a British animation filmmaker and puppeteer known for directing the 2008 animated feature film, Kung Fu Panda with Mark Osborne. Stevenson has over 30 years of experence with animation, a veteran of DreamWorks PDI who got his start in the entertainment industry via Jim Henson's The Muppet Show.",<br>
+                BirthYear: "1958"<br>
+              },<br>
+              IamgePath: "https://www.themoviedb.org/t/p/w1280/wWt4JYXTg5Wr3xBW2phBrMKgp3x.jpg",<br>
+              Actors: [ "actor01", "actor02", "actor03" ],<br>
+              Featured: true
+            }<br>
           </td>
         </tr>
         <tr>
@@ -67,9 +79,11 @@
           <td>
             A JSON object holding data about a specific genre:<br>
             {<br>
-              genreName: 'Action',
-              description: 'An action story is similar to adventure, and the protagonist usually takes a risky turn, which leads to desperate situations'<br>
-            }
+              Genre: {<br>
+                Name: "Animation",<br>
+                Description: Description: "Animation is a method in which figures are manipulated to appear as moving images. This can be done in many different ways and can incorporate any other genre or sub-genre. In traditional animation, images are drawn or painted by hand on transparent celluloid sheets to be photographed and exhibited on film. Today, most animations are made with computer-generated imagery (CGI)."<br>
+              }<br>
+            }<br>
           </td>
         </tr>
         <tr>
@@ -85,12 +99,49 @@
           <td>GET</td>
           <td>None</td>
           <td>
-            A JSON object holding data about a specific genre:<br>
+            A JSON object holding data about a specific director:<br>
             {<br>
-              name: 'Mark Osborne',<br>
-              born: 'September 17, 1970'<br>
-            }
+              Director: {<br>
+                Name: "John Stevenson",<br>
+                Bio: "John Stevenson is a British animation filmmaker and puppeteer known for directing the 2008 animated feature film, Kung Fu Panda with Mark Osborne. Stevenson has over 30 years of experence with animation, a veteran of DreamWorks PDI who got his start in the entertainment industry via Jim Henson's The Muppet Show.",<br>
+                BirthYear: "1958"<br>
+              }<br>
+            }<br>
           </td>
+        </tr>
+        <tr>
+          <td>Get a list of all actors</td>
+          <td>/actors/</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>A JSON object holding data about all actors</td>
+        </tr>
+        <tr>
+          <td>Get information about a actor by name</td>
+          <td>/actors/:name</td>
+          <td>GET</td>
+          <td>None</td>
+            A JSON object holding data about a specific actor:<br>
+            {<br>
+              _id: "actor01",<br>
+              Name: "Jack Black",<br>
+              BirthYear: "1969",<br>
+              Movies: [<br>
+                {<br>
+                  _id: "mov01",<br>
+                  Role: "Po (voice)"<br>
+                },<br>
+                {<br>
+                  _id: "mov02",<br>
+                  Role: "Po (voice)"<br>
+                },<br>
+                {<br>
+                  _id: "mov03",<br>
+                  Role: "Po (voice)<br>
+                }<br>
+              ]<br>
+            }<br>
+        </td>
         </tr>
         <tr>
           <td>Allow new users to register</td>
@@ -99,16 +150,21 @@
           <td>
             A JSON object holding data about the user to add, structured like:<br>
             {<br>
-              username: 'username',<br>
-              email: 'example@email.com'<br>
-            }
+              Username: "gaia_stinki",<br>
+              Password: "woof",<br>
+              Email: "imjustadog@woof.com",<br>
+              Birthday: "2020-07-03"<br>
+            }<br>
           </td>
           <td>
             A JSON object holding data about the user that was added:<br>
             {<br>
-              username: 'username',<br>
-              email: 'example@email.com'<br>
-            }
+              _id: "user02",<br>
+              Username: "gaia_stinki",<br>
+              Password: "woof",<br>
+              Email: "imjustadog@woof.com",<br>
+              Birthday: "2020-07-03"<br>
+            }<br>
           </td>
         </tr>
         <tr>
@@ -119,9 +175,12 @@
           <td>
             A JSON object holding data about the user:<br>
             {<br>
-              username: 'username',<br>
-              email: 'example@email.com'<br>
-            }
+              _id: "user02",<br>
+              Username: "gaia_stinki",<br>
+              Email: "imjustadog@woof.com",<br>
+              Birthday: "2020-07-03",<br>
+              FavoriteMovies: [ "mov06" ]<br>
+            }<br>
           </td>
         </tr>
         <tr>
