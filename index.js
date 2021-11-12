@@ -1,15 +1,14 @@
 const express = require('express'),
   morgan = require('morgan'),
   bodyParser = require('body-parser'),
-  mongoose = require('mongoose');
+  mongoose = require('mongoose'),
+  Models = require('./models.js');
 
-const Models = require('./models.js');
-
-const Movies = Models.Movie;
-const Genres = Models.Genre;
-const Directors = Models.Director;
-const Actors = Models.Actor;
-const Users = Models.User;
+const Movies = Models.Movie,
+  Genres = Models.Genre,
+  Directors = Models.Director,
+  Actors = Models.Actor,
+  Users = Models.User;
 
 mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Now connected to MongoDB!'))
@@ -22,6 +21,11 @@ app.use(morgan('common'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+let auth = require('./auth')(app);
+
+const passport = require('passport');
+require('./passport');
+
 app.get('/', (req, res) => {
   res.send('Welcome to my app!');
 });
@@ -31,7 +35,7 @@ app.get('/documentation', (req, res) => {
 });
 
 // get a list of all movies
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
   .then((movies) => {
     res.status(201).json(movies);
