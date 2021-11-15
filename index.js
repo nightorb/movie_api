@@ -10,7 +10,11 @@ const Movies = Models.Movie,
   Actors = Models.Actor,
   Users = Models.User;
 
-mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true })
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true })
+//   .then(() => console.log('Now connected to MongoDB!'))
+//   .catch((err) => console.error(err));
+
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Now connected to MongoDB!'))
   .catch((err) => console.error(err));
 
@@ -27,19 +31,21 @@ require('./passport');
 app.use(passport.initialize());
 
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+app.use(cors());
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin)
-    return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      let message = 'The CORS policy for this application doesn\'t allow access from orgigin ' + origin;
-      return callback(new Error(message), false);
-    }
-    return callback(null, true);
-  }
-}));
+// CORS that allows only specific domains
+// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     if (!origin)
+//     return callback(null, true);
+//     if (allowedOrigins.indexOf(origin) === -1) {
+//       let message = 'The CORS policy for this application doesn\'t allow access from orgigin ' + origin;
+//       return callback(new Error(message), false);
+//     }
+//     return callback(null, true);
+//   }
+// }));
 
 let auth = require('./auth')(app);
 
