@@ -157,7 +157,7 @@ app.get('/actors/:name', passport.authenticate('jwt', { session: false }), (req,
 
 
 // add a user (register)
-app.post('/register', passport.authenticate('jwt', { session: false }),
+app.post('/register',
   [
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username can only contain alphanumeric characters, "-" and "_".').isAlphanumeric().isWhitelisted('-', '_'),
