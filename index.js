@@ -159,7 +159,7 @@ app.get('/actors/:name', passport.authenticate('jwt', { session: false }), (req,
 app.post('/register',
   [
     check('Username', 'Username is required').isLength({min: 5}),
-    check('Username', 'Username can only contain alphanumeric characters, "-" and "_".').isAlphanumeric().isWhitelisted('-', '_'),
+    check('Username', 'Username can only contain alphanumeric characters.').isAlphanumeric(),
     check('Password', 'Password is required').notEmpty().isStrongPassword(),
     check('Email', 'Email does not appear to be valid').isEmail().normalizeEmail()
   ],
