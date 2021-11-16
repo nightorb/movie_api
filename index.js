@@ -47,7 +47,7 @@ require('./passport');
 
 app.use(passport.initialize());
 
-let auth = require('./auth')(app);
+require('./auth')(app);
 
 const { check, validationResult } = require('express-validator');
 
@@ -168,7 +168,7 @@ app.post('/register',
     // check validation object for errors
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: error.array() });
+      return res.status(422).json({ errors: errors.array() });
     }
 
     let hashedPassword = Users.hashPassword(req.body.Password);
@@ -294,7 +294,7 @@ app.delete('/users/:username', passport.authenticate('jwt', { session: false }),
     });
 });
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
