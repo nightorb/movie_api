@@ -10,13 +10,13 @@ const Movies = Models.Movie,
   Actors = Models.Actor,
   Users = Models.User;
 
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true })
-//   .then(() => console.log('Now connected to MongoDB!'))
-//   .catch((err) => console.error(err));
-
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Now connected to MongoDB!'))
   .catch((err) => console.error(err));
+
+// mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+//   .then(() => console.log('Now connected to MongoDB!'))
+//   .catch((err) => console.error(err));
 
 const app = express();
 
@@ -24,11 +24,6 @@ app.use(express.static('public'));
 app.use(morgan('common'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-const passport = require('passport');
-require('./passport');
-
-app.use(passport.initialize());
 
 const cors = require('cors');
 app.use(cors());
@@ -46,6 +41,11 @@ app.use(cors());
 //     return callback(null, true);
 //   }
 // }));
+
+const passport = require('passport');
+require('./passport');
+
+app.use(passport.initialize());
 
 let auth = require('./auth')(app);
 
@@ -154,7 +154,6 @@ app.get('/actors/:name', passport.authenticate('jwt', { session: false }), (req,
     res.status(500).send('Error: ' + err);
   });
 });
-
 
 // add a user (register)
 app.post('/register',
