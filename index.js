@@ -63,7 +63,7 @@ app.get('/documentation', (req, res) => {
 app.get('/movies', (req, res) => {
   Movies.find()
   .then((movies) => {
-    res.status(201).json(movies);
+    res.status(200).json(movies);
   })
   .catch((err) => {
     console.error(err);
@@ -73,9 +73,9 @@ app.get('/movies', (req, res) => {
 
 // get a movie by its title
 app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.findOne({ Title: req.params.Title })
+  Movies.findOne({ Title: req.params.title })
   .then((movie) => {
-    res.status(201).json(movie);
+    res.status(200).json(movie);
   })
   .catch((err) => {
     console.error(err);
@@ -97,9 +97,13 @@ app.get('/genres', passport.authenticate('jwt', { session: false }), (req, res) 
 
 // get a genre by its name
 app.get('/genres/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Genres.findOne({ Name: req.params.Name })
+  Genres.findOne({ Name: req.params.name })
   .then((genre) => {
-    res.status(201).json(genre);
+    if (genre === null) {
+      return res.status(404).send('Genre not found.');
+    } else {
+      res.status(200).json(genre);
+    }
   })
   .catch((err) => {
     console.error(err);
@@ -111,7 +115,7 @@ app.get('/genres/:name', passport.authenticate('jwt', { session: false }), (req,
 app.get('/directors', passport.authenticate('jwt', { session: false }), (req, res) => {
   Directors.find()
   .then((directors) => {
-    res.status(201).json(directors);
+    res.status(200).json(directors);
   })
   .catch((err) => {
     console.error(err);
@@ -121,9 +125,9 @@ app.get('/directors', passport.authenticate('jwt', { session: false }), (req, re
 
 // get a director by their name
 app.get('/directors/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Directors.findOne({ Name: req.params.Name })
+  Directors.findOne({ Name: req.params.name })
   .then((director) => {
-    res.status(201).json(director);
+    res.status(200).json(director);
   })
   .catch((err) => {
     console.error(err);
@@ -135,7 +139,7 @@ app.get('/directors/:name', passport.authenticate('jwt', { session: false }), (r
 app.get('/actors', passport.authenticate('jwt', { session: false }), (req, res) => {
   Actors.find()
   .then((actors) => {
-    res.status(201).json(actors);
+    res.status(200).json(actors);
   })
   .catch((err) => {
     console.error(err);
@@ -145,9 +149,9 @@ app.get('/actors', passport.authenticate('jwt', { session: false }), (req, res) 
 
 // get an actor by their name
 app.get('/actors/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Actors.findOne({ Name: req.params.Name })
+  Actors.findOne({ Name: req.params.name })
   .then((actor) => {
-    res.status(201).json(actor);
+    res.status(200).json(actor);
   })
   .catch((err) => {
     console.error(err);
@@ -200,7 +204,7 @@ app.post('/register',
 
 // get a user by username
 app.get('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOne({ Username: req.params.Username })
+  Users.findOne({ Username: req.params.username })
     .then((user) => {
       res.status(200).json(user);
     })
@@ -213,7 +217,7 @@ app.get('/users/:username', passport.authenticate('jwt', { session: false }), (r
 // update a user's info by username
 app.put('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate(
-    { Username: req.params.Username },
+    { Username: req.params.username },
     { $set:
       {
         Username: req.body.Username,
@@ -224,7 +228,7 @@ app.put('/users/:username', passport.authenticate('jwt', { session: false }), (r
     },
     { new: true }) // this line makes sure that the updated document is returned
       .then((updatedUser) => {
-        res.status(201).json(updatedUser);
+        res.status(200).json(updatedUser);
       })
       .catch((err) => {
         console.error(err);
@@ -234,9 +238,9 @@ app.put('/users/:username', passport.authenticate('jwt', { session: false }), (r
 
 // get a user's list of favorite movies
 app.get('/users/:username/favorites', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOne({ Username: req.params.Username })
+  Users.findOne({ Username: req.params.username })
     .then((user) => {
-      res.status(201).json(user);
+      res.status(200).json(user);
     })
     .catch((err) => {
       console.error(err);
@@ -247,7 +251,7 @@ app.get('/users/:username/favorites', passport.authenticate('jwt', { session: fa
 // add a movie to a user's list of favorites (old url: /users/:username/favorites)
 app.post('/users/:username/favorites/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate(
-    { Username: req.params.Username },
+    { Username: req.params.username },
     { $addToSet: //similar to $push operator
       { FavoriteMovies: req.params.MovieID }
     },
@@ -264,7 +268,7 @@ app.post('/users/:username/favorites/:MovieID', passport.authenticate('jwt', { s
 // remove a movie from a user's list of favorites
 app.delete('/users/:username/favorites/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate(
-    { Username: req.params.Username },
+    { Username: req.params.username },
     { $pull:
       { FavoriteMovies: req.params.MovieID }
     },
@@ -280,12 +284,12 @@ app.delete('/users/:username/favorites/:MovieID', passport.authenticate('jwt', {
 
 // delete a user by username
 app.delete('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndRemove({ Username: req.params.Username })
+  Users.findOneAndRemove({ Username: req.params.username })
     .then((user) => {
       if (!user) {
-        res.status(400).send(req.params.Username + ' was not found');
+        res.status(400).send(req.params.username + ' was not found');
       } else {
-        res.status(200).send(req.params.Username + ' was deleted');
+        res.status(200).send(req.params.username + ' was deleted');
       }
     })
     .catch((err) => {
