@@ -10,13 +10,13 @@ const Movies = Models.Movie,
   Actors = Models.Actor,
   Users = Models.User;
 
-mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Now connected to MongoDB!'))
-  .catch((err) => console.error(err));
-
-// mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true })
 //   .then(() => console.log('Now connected to MongoDB!'))
 //   .catch((err) => console.error(err));
+
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Now connected to MongoDB!'))
+  .catch((err) => console.error(err));
 
 const app = express();
 
@@ -197,6 +197,7 @@ app.post('/users',
         return new Promise((resolve, reject) => {
           Users.findOne({ Email: req.body.Email }, function(err, user) {
             if (err) {
+              console.error(err);
               reject(new Error('Server Error'));
             }
             if (user) {
@@ -245,7 +246,7 @@ app.post('/users',
 
 // get a user by username
 app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOne({ Username: req.params.Username }) // add 'Username FavoriteMovies' to only return that
+  Users.findOne({ Username: req.params.Username }, 'Username FavoriteMovies') // add  to only return that
     .then((user) => {
       res.status(200).json(user);
     })
@@ -275,6 +276,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
         return new Promise((resolve, reject) => {
           Users.findOne({ Email: req.body.Email }, function(err, user) {
             if (err) {
+              console.error(err);
               reject(new Error('Server Error'));
             }
             if (user) {
@@ -294,7 +296,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
       return res.status(422).json({ errors: errors.array() });
     }
 
-    let hashedPassword = Users.hashPassword(req.body.Password);
+    let hashedPassword = req.body.Password ? Users.hashPassword(req.body.Password) : undefined;
 
     if (req.user.Username !== req.params.Username) {
       return res.status(401).send('This is not your account!');
