@@ -246,7 +246,7 @@ app.post('/users',
 
 // get a user by username
 app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOne({ Username: req.params.Username }, 'Username FavoriteMovies') // add  to only return that
+  Users.findOne({ Username: req.params.Username }, 'Username Email Birthday FavoriteMovies') // add  to only return that
     .then((user) => {
       res.status(200).json(user);
     })
