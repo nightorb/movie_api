@@ -272,20 +272,20 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
     check('Email', 'Email does not appear to be valid.')
       .isEmail()
       .normalizeEmail()
-      .custom((value, {req}) => {
-        return new Promise((resolve, reject) => {
-          Users.findOne({ Email: req.body.Email }, function(err, user) {
-            if (err) {
-              console.error(err);
-              reject(new Error('Server Error'));
-            }
-            if (user) {
-              reject(new Error('Email is already in use'));
-            }
-            resolve(true);
-          });
-        });
-      })
+      // .custom((value, {req}) => {
+      //   return new Promise((resolve, reject) => {
+      //     Users.findOne({ Email: req.body.Email }, function(err, user) {
+      //       if (err) {
+      //         console.error(err);
+      //         reject(new Error('Server Error'));
+      //       }
+      //       if (user) {
+      //         reject(new Error('Email is already in use'));
+      //       }
+      //       resolve(true);
+      //     });
+      //   });
+      // })
       .optional()
   ],
  (req, res) => {
