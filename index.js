@@ -26,7 +26,28 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const cors = require('cors');
-app.use(cors());
+
+// CORS that allows only specific domains
+let allowedOrigins = [
+  'http://localhost:8080',
+  'http://localhost:1234',
+  'https://nightorbs-myflix.netlify.app',
+  'https://nightorbs-myflix.herokuapp.com/',
+  'https://nightorb.github.io'
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin)
+    return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) === -1) {
+      let message = 'The CORS policy for this application doesn\'t allow access from origin ' + origin;
+      return callback(new Error(message), false);
+    }
+    return callback(null, true);
+  }
+}));
 
 const passport = require('passport');
 require('./passport');
@@ -272,20 +293,6 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
     check('Email', 'Email does not appear to be valid.')
       .isEmail()
       .normalizeEmail()
-      // .custom((value, {req}) => {
-      //   return new Promise((resolve, reject) => {
-      //     Users.findOne({ Email: req.body.Email }, function(err, user) {
-      //       if (err) {
-      //         console.error(err);
-      //         reject(new Error('Server Error'));
-      //       }
-      //       if (user) {
-      //         reject(new Error('Email is already in use'));
-      //       }
-      //       resolve(true);
-      //     });
-      //   });
-      // })
       .optional()
   ],
  (req, res) => {
