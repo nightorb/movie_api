@@ -448,7 +448,10 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
  */
 app.get('/users/:Username/favorites', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOne({ Username: req.params.Username })
-    .populate('FavoriteMovies')
+    .populate({
+      path: 'FavoriteMovies',
+      populate: [{ path: 'Genre'}, { path: 'Director'}]
+    })
     .then((user) => {
       res.status(200).json(user);
     })
